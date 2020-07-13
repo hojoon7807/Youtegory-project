@@ -1,4 +1,4 @@
 Youtegory project
 =================
 
-[Youtegory]("http://youtegory.shop")
+[Youtegory]("https://youtegory.shop")
