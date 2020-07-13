@@ -1,1 +1,1 @@
-"https://youtegory.shop"
+`https://youtegory.shop`
