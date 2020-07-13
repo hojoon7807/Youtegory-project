@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="내 사이트의 제목" />
+    <meta property="og:description" content="보고 있는 페이지의 내용 요약" />
+    <meta property="og:image" content="{{ url_for('static', filename='cab65460f39bfe97363aaccadcb8f821-sticker.png') }}" />
+    <title>메인 페이지</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css" />
+    <link rel="stylesheet" href="main.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script defer src="categoryPage.js"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
+    <script defer src="{{url_for('static', filename='categoryPage.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $('.selectCate').empty()// index.html 로드가 완료되면 자동으로 show_star() 함수를 호출합니다.
+            show_videos();
+        });
+        function show_videos() {
+            $.ajax({
+                type: 'GET',
+                url: '/api/list',
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let videosList = response['videos'];
+                        let categoryList = Object.keys(videosList)
+                        for (i = 0; i < categoryList.length; i++) {
+                            categoryName = categoryList[i]
+                            urlList = videosList[categoryName]
+                            header = `<h4>${categoryName}<a class="icon" onclick="deleteCategory()"><i class="fas fa-times"></i></a></h4>
+                            <div class="videos">`
+                            for (j = 0; j < urlList.length; j++) {
+                                url = urlList[j]["url"]
+                                makeIframe = `<iframe src=${url}
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>`
+                                header = header + makeIframe
+                            }
+                            makeList = header + "</div>"
+                            $('.selectCate').append(makeList);
+                        }
+                    }
+                }
+            })
+        }
+
+        // function make_video(category, url) {
+        //     let temp = `
+        //     <h4>${category}<a class="icon" onclick="deleteCategory(${category})"><i class="fas fa-times"></i></a></h4>
+        // <div class="videos">
+        //     <iframe src="${url}"
+        //         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        //         allowfullscreen></iframe>
+        // </div>`
+        //     $('.selectCate').append(temp);
+        // }
+        function deleteCategory() {
+            $(".selectCate h4").click(function () {
+                category = $(this).text()
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/delete',
+                    data: { 'category_give': category },
+                    success: function (response) {
+                        if (response['result'] == 'success') {
+
+                            alert('삭제완료');
+                            window.location.reload()
+                        }
+                    }
+                });
+            })
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <div>
+
+    </div>
+    <input type="checkbox" id="check">
+    <header>
+        <label for="check">
+            <i class="fas fa-bars" id="sidebarBtn"></i>
+        </label>
+        <div class='leftArea'>
+            <h3><i class="fab fa-youtube"></i> Youtube<span> category Select</span></h3>
+        </div>
+
+    </header>
+    <div class='sidebar'>
+        <center>
+            <img src="{{ url_for('static', filename='RenderedImage.jpeg') }}" class="profile" alt="">
+            <h4>HoJoon Lim </h4>
+        </center>
+        <a href="http://localhost:5000"><i class="fas fa-home"></i><span>홈</span></a>
+
+        <a href="http://localhost:5000/category"><i class="fas fa-cogs"></i><span>전체 카테고리</span></a>
+    </div>
+    <div class="selectCate">
+        <h4>카테고리<a class="icon" onclick="deleteCategory('category')"><i class="fas fa-times"></i></a></h4>
+        <div class="videos">
+            <iframe src="https://www.youtube.com/embed/VlBey9zVzq4"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/VlBey9zVzq4"></iframe>
+            <iframe src="https://www.youtube.com/embed/VlBey9zVzq4"></iframe>
+            <iframe src="https://www.youtube.com/embed/VlBey9zVzq4"></iframe>
+            <iframe src="https://www.youtube.com/embed/VlBey9zVzq4"></iframe>
+            <iframe src="https://www.youtube.com/embed/7N9fc_oYcJc" frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+            <iframe id="player" type="text/html"
+                src="http://www.youtube.com/embed/M7lc1UVf-VE?enablejsapi=1&origin=http://example.com"
+                frameborder="0"></iframe>
+        </div>
+    </div>
+
+    </div>
+
+</body>
+
+</html>
