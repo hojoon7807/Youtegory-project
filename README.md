@@ -1,1 +1,4 @@
-`https://youtegory.shop`
+Youtegory project
+=================
+
+[Youtegory]("http://youtegory.shop")
